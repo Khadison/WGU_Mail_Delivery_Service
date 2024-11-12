@@ -1,5 +1,5 @@
 import csv
-from datetime import datetime, timedelta
+from datetime import datetime, time, timedelta
 
 class HashTable:
     def __init__(self, size=40):
@@ -93,24 +93,42 @@ class HashTable:
                 if status:
                     # Checks if status updates
                     #print(f"Updating status for Package {package_id} to {status}")
-                    package_list[5] = status  
+                    package_list[5] = status
 
                 if delivery_time:
                     # Checks if delivery time updates
                     #print(f"Updating delivery time for Package {package_id} to {delivery_time}")
                     delivery_time = self._parse_time(delivery_time)
-                    package_list[6] = delivery_time  
+                    package_list[6] = delivery_time
 
                 if departure_time:
                     # Checks if departure time updates
                     #print(f"Updating departure time for Package {package_id} to {departure_time}")
                     departure_time = self._parse_time(departure_time)
-                    package_list[7] = departure_time  
+                    package_list[7] = departure_time
 
-                if new_address:
+                # Special condition for package #9
+                if package_id == '9' and new_address:
+                    current_time = departure_time or package_list[7]
+                    update_time = datetime.combine(datetime.min, time(10, 20))
+                    
+                    if isinstance(current_time, timedelta):
+                        current_datetime = datetime.min + current_time
+                    elif isinstance(current_time, datetime):
+                        current_datetime = current_time
+                    else:
+                        print(f"Unexpected time format for Package 9: {current_time}")
+                        return False
+
+                    if current_datetime >= update_time:
+                        package_list[1] = new_address
+                        print(f"Updated address for Package 9 at {current_datetime.time()}")
+                    else:
+                        print(f"Address update for Package 9 is scheduled for 10:20 AM. Current time: {current_datetime.time()}")
+                elif new_address:
                     # Checks if address updates
                     #print(f"Updating address for Package {package_id} to {new_address}")
-                    package_list[1] = new_address  
+                    package_list[1] = new_address
 
                 self.table[index][i] = tuple(package_list)
                 return True

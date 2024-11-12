@@ -28,15 +28,14 @@ def main():
     # Load distance data
     distances = load_distance_data('CSV/distance.csv')
     
-    # Update address for package delivery
-    package_hash.update_package_details('9', new_address="410 S State St, Salt Lake City, UT 84111")
+
    
     # Create truck objects
     truck1 = Truck(1, 16, 18, 0, "4001 South 700 East", ['14', '15', '19', '16', '13', '20', '40', '5', '8', '10', '11', '12', '37', '21', '24', '1'], timedelta(hours = 8))
     truck2 = Truck(2, 16, 18, 0, "4001 South 700 East", ['3', '6', '18', '36', '38', '2', '22', '23', '26', '29', '30', '31', '33', '34', '17', '25'], timedelta(hours = 9, minutes = 5))
     truck3 = Truck(3, 16, 18, 0, "4001 South 700 East", ['9', '28', '32', '35', '39', '4', '7', '27'], timedelta(hours = 10, minutes = 50))
     
-    #move 25, 40, 6, with 1 and 4?
+    
     trucks = [truck1, truck2, truck3]
     
     # Run delivery simulation for each truck
@@ -44,6 +43,8 @@ def main():
             route = nearest_neighbor(truck, package_hash, distances)
             deliver_packages(trucks, route, package_hash, distances)
             
+    # Update address for package delivery
+    package_hash.update_package_details('9',  new_address="410 S. State St., Salt Lake City, UT 84111")
     
     # User Interface
     print("\nWelcome to Western Governors University Parcel Service (WGUPS)")
@@ -72,7 +73,7 @@ def main():
 
                 # Check and print status of that specific package
                 status = package_hash.check_package_status(package_id, check_time)
-                print(f"\nPackage {package_id}: {status}")
+                print(f"\n{status}")
             except ValueError:
                 print("\nInvalid entry. Please try again.")
 
